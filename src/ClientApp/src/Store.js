@@ -33,7 +33,7 @@ const AppReducer =
       case COActionTypes.Optimize:
         return {
           ...state,
-          loading: action.loading
+          loading: true
         }
 
       case COActionTypes.Reset:
@@ -46,17 +46,17 @@ const AppReducer =
       case COActionTypes.Completed:
         return {
           ...state,
-          loading: action.loading,
+          loading: false,
           coins : action.coins ? 
               action.coins.map(r => {
                 return {
                   key: r.name,
-                  image: r.name + '.jpeg',
-                  count: r.count
+                  image: r.name.toLowerCase() + '.jpeg',
+                  count: r.quantity
                 }
               }) : []
         }
-
+        
         default:
           return state;
 

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace coin
+namespace Coin
 {
     public class Startup
     {
@@ -25,6 +25,7 @@ namespace coin
             {
                 configuration.RootPath = "ClientApp/build";
             });
+            services.AddSingleton<ICoinOptimizeProvider, CoinOptimizeProvider>();
         }
 
 
@@ -44,17 +45,16 @@ namespace coin
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");               
             });
 
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
+                if (env.IsDevelopment()) 
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
-                }
+                }    
             });
         }
     }

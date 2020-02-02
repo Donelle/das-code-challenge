@@ -3,15 +3,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Container, Divider, Header, Message } from "semantic-ui-react"
 import { OptimizerForm, Coins } from './UI'
+import OptimizeServiceFactory from './AppService'
 import COActionTypes from './ActionTypes'
 
 const App = args => { 
-  const props = {
-    handleSubmit:args.handleSubmit, 
-    handleChange: args.handleChange, 
-    handleReset: args.handleClear 
-  }
-
+  const props = { handleSubmit:args.handleSubmit,  handleReset: args.handleClear }
   return (
     <Container>
       <Divider hidden />
@@ -29,39 +25,33 @@ const App = args => {
   )
 }
 
-
-const handleTotalAmountChange = (e, d) => {
-  console.log(e.target.value)
-}
+const fireAction = (action, data, dispatch) =>
+  dispatch({ type: action, ...data })
 
 
-const handleSubmit = (values, dispatch) => {
+const handleSubmit = async (values, dispatch) => {
+  fireAction(COActionTypes.Optimize, {}, dispatch)
+
+  let 
+    parts = values.totalAmount.replace(/[^0-9.]+/g,'').split('.'),
+    amount = (parts[0] * 100) + parseInt((parts.length > 1 ? 
+        (parts[1].length === 1 ? parts[1] + '0': parts[1] ) : 0)),  
+    state = { loading: false, coins: [] },
+    service = OptimizeServiceFactory.create(),
+    result = await service.optimize(amount)
   
-  setTimeout(() => {
-    let testPayload = {
-      loading: false,
-      coins: [
-        {
-          name: 'quarter',
-          count: 5,
-        },
-        {
-          name: 'penny',
-          count: 1
-        }
-      ]
-    }
-    
-    dispatch({ type: COActionTypes.Completed, ...testPayload })
-  }, 1000)
-
-  dispatch({ type: COActionTypes.Optimize, loading: true })
+  if (result.Ok) {
+    state.coins = result.Content
+    fireAction(COActionTypes.Completed, state, dispatch)
+  } else {
+    fireAction(COActionTypes.Failed, state, dispatch)
+  }
 }
 
 
 const handleClear = (form,dispatch) => {
   form.reset()
-  dispatch({ type: COActionTypes.Reset })
+  fireAction(COActionTypes.Reset, {}, dispatch)
 }
 
 
@@ -75,7 +65,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleChange : event => handleTotalAmountChange(event, dispatch),
     handleSubmit : values => handleSubmit(values, dispatch),
     handleClear: form => handleClear(form, dispatch)
   }

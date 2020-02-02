@@ -4,6 +4,51 @@ import { Form, Grid, Placeholder, Image, Header } from "semantic-ui-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoins } from '@fortawesome/pro-regular-svg-icons'
 
+/* eslint-disable */
+const CurrencyFormatter = new function() { 
+	// Reference: https://codepen.io/559wade/pen/LRzEjj
+	this.onKeyUp = e => 
+		this.format(e.target)
+	
+	this.onBlur = e => 
+		this.format(e.target, true)	
+
+	this.formatNumber = n => 
+		n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+	this.format = (input, blur) => {
+		let input_val = input.value
+		if (input_val === "") return
+		
+		let original_len = input_val.length,
+				caret_pos = input.selectionStart
+			
+		if (input_val.indexOf(".") >= 0) {
+			let decimal_pos = input_val.indexOf("."),
+					left_side = input_val.substring(0, decimal_pos),
+					right_side = input_val.substring(decimal_pos)
+
+			left_side = this.formatNumber(left_side)
+			right_side = this.formatNumber(right_side)
+			
+			if (blur) right_side += "00"
+						
+			right_side = right_side.substring(0, 2)
+			input_val = "$" + left_side + "." + right_side
+		} else {
+			input_val = this.formatNumber(input_val)
+			input_val = "$" + input_val
+			if (blur) input_val += ".00"
+		}
+	
+		input.value = input_val;
+		
+		let updated_len = input_val.length
+		caret_pos = updated_len - original_len + caret_pos;
+		input.setSelectionRange(caret_pos, caret_pos);
+	}
+}
+/* eslint-enable */
 
 const coinStyle = { 
 	column: {  height: 'auto', width: 'auto' },
@@ -48,15 +93,17 @@ export const OptimizerForm = props => {
 			<FinalForm onSubmit={props.handleSubmit} >
 				{
 					({ handleSubmit, form, pristine, submitting }) => (
-						<Form onSubmit={handleSubmit}>
+						<Form onSubmit={handleSubmit} >
 							<FontAwesomeIcon icon={ faCoins } style={iconStyle} />
 							<FormField 
 								component={Form.Input} 
 								name="totalAmount"
 								iconPosition="left"
 								label="Enter the Total Amount Below"
-								placeholder="$0.00" 
-								onKeyUp={props.handleChange} />	 
+								placeholder="$0.00"
+								pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" 
+								onKeyUp={CurrencyFormatter.onKeyUp}
+								onBlur={CurrencyFormatter.onBlur} />	 
 												
 							<Form.Group inline>
 								<Form.Button primary loading={submitting} disabled={pristine || submitting}>Submit</Form.Button>

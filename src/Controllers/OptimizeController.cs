@@ -1,29 +1,30 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 
-namespace Coin.Controllers
+namespace Coin
 {
     [ApiController]
     [Route("[controller]")]
     public class OptimizeController : ControllerBase
     {
         private readonly ILogger<OptimizeController> _logger;
-
-        public OptimizeController(ILogger<OptimizeController> logger)
+        private readonly ICoinOptimizeProvider _provider;
+        
+        public OptimizeController(ICoinOptimizeProvider provider, ILogger<OptimizeController> logger)
         {
             _logger = logger;
+            _provider = provider;
         }
 
         [HttpPost]
-        public Task<JsonResult> Index(int totalAmount)
+        public JsonResult Post([FromForm] ulong totalAmount)
         {
-            var result = new JsonResult(new { SilverDollar = 0, HalfDollar = 0, Quarter = 0, Dime = 0, Nickle = 0, Penny = 0 });
-            return Task.FromResult(result);
+            _logger.LogDebug(0, $"Receieved total amount: {totalAmount}");
+
+            var coins = _provider.CountCoins(totalAmount);
+            return new JsonResult(coins);
         }
     }
 }
