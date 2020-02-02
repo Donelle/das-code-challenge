@@ -4,7 +4,7 @@ import * as jQuery from 'jquery'
 class Service  {
 
 	constructor() {
-		this.baseUrl = 'https://' + window.location.host + "/"
+		this.baseUrl = window.location.protocol
 	}
 
   post(url, data) { 

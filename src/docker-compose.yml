@@ -1,9 +1,9 @@
 version: '3.7'
+
 services:
     
-networks:
-  frontend:
-  backend:
-
-volumes:
-  data:
+    coinapp:
+      image: mavrk/coinoptimizerapp:1.0
+      ports:
+        - "6400:80"
+        

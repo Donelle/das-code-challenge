@@ -30,6 +30,7 @@ const fireAction = (action, data, dispatch) =>
 
 
 const handleSubmit = async (values, dispatch) => {
+  if (!values || !values.totalAmount) return
   fireAction(COActionTypes.Optimize, {}, dispatch)
 
   let 
