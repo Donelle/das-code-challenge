@@ -1,7 +1,7 @@
 Coin Optimizer
 ========================
 
-This is a small project that I've created for a technical interview that demonstrates my frontend and backend skillset using React, .NET ASPNET Core, and Docker. See [Challenge Document](DAS%20Coding%20Challenge.docx) for challenge details.
+This is a small project that I've created for a technical interview that demonstrates my frontend and backend skillset using React, .NET ASPNET Core, and Docker. See [Challenge Document](https://github.com/Donelle/das-code-challenge/raw/master/DAS%20Coding%20Challenge.docx) for challenge details.
 
 ## Documentation
 
