@@ -1,9 +1,6 @@
 Coin Optimizer
 ========================
 
-
-## Introduction
-
 This is a small project that I've created for a technical interview that demonstrates my frontend and backend skillset using React, .NET ASPNET Core, and Docker.
 
 ## Documentation
