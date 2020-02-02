@@ -1,5 +1,5 @@
 ﻿import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import { reducer as formReducer } from "redux-form";
+import COActionTypes from './ActionTypes'
 
 export default function configureStore(initialState) {
 
@@ -16,7 +16,7 @@ export default function configureStore(initialState) {
 
   const rootReducer = combineReducers({
     /*...reducers, */
-    form: formReducer
+    app: AppReducer,
   });
 
   return createStore(
@@ -27,3 +27,38 @@ export default function configureStore(initialState) {
   
 }
 
+const AppReducer = 
+  (state = { loading: false, coins:[] }, action) => {
+    switch (action.type) {
+      case COActionTypes.Optimize:
+        return {
+          ...state,
+          loading: action.loading
+        }
+
+      case COActionTypes.Reset:
+        return {
+          ...state,
+          loading: false,
+          coins: []
+        }
+
+      case COActionTypes.Completed:
+        return {
+          ...state,
+          loading: action.loading,
+          coins : action.coins ? 
+              action.coins.map(r => {
+                return {
+                  key: r.name,
+                  image: r.name + '.jpeg',
+                  count: r.count
+                }
+              }) : []
+        }
+
+        default:
+          return state;
+
+    }
+  }

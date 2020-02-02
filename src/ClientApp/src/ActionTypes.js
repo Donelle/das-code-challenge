@@ -1,6 +1,7 @@
 // Global Action Types
-export const COActionTypes = {
-    Optimize : 'CO_OPTIMIZE',
-    Failed : 'CO_FAILED',
-    Update: 'CO_UPDATE'
+export default {
+    Optimize : 'CO_OPTIMIZE_STARTED',
+    Failed : 'CO_OPTIMIZED_FAILED',
+    Completed: 'CO_OPTIMIZE_COMPLETED',
+    Reset: 'CO_RESET'
 }
