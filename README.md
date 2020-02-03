@@ -24,6 +24,8 @@ After the build is complete successfully a docker image should be available on y
     # Run from docker hub
     docker-compose up -d
 
+Once the containers start running point your browser to http://localhost:6400. The app is built with mobile first in mind 
+so F12 it in Chrome/FireFox and change to mobile mode for the best experience.
 
 ## Windows
 
@@ -35,7 +37,7 @@ For windows users the project can be built by executing the commands inside the 
     cd build && dotnet coin.dll
     
 
-Once the containers start running point your browser to http://localhost:6400. The app is built with mobile first in mind so F12 it in Chrome/FireFox and change to mobile mode for the best experience.
+Once the web server starts running point your browser to http://localhost:5000/ .
 
 Thats it.
 
