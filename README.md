@@ -26,6 +26,16 @@ After the build is complete successfully a docker image should be available on y
 
 Once the containers start running point your browser to http://localhost:6400. The app is built with mobile first in mind so F12 it in Chrome/FireFox and change to mobile mode for the best experience.
 
+
+## Windows
+
+For windows users the project can be built by executing the commands inside the build.sh script manually one by one. The contents of the build script are below:
+
+    # build, publish, run
+    dotnet restore
+    dotnet publish -c Release -o build
+    cd build && dotnet run
+    
 Thats it.
 
 ## LICENSE
